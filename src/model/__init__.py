@@ -46,6 +46,3 @@ class Transition(db.Entity):
     updated_date = Optional(datetime, default=lambda: datetime.now(), volatile=True)
     settlement = Required(Settlement)
     product = Required(Product)
-
-
-db.generate_mapping()
