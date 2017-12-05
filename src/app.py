@@ -1,6 +1,6 @@
 from flask import Flask
-from flask_restful import Api
 
+from common.api import Api
 from resource import gift_code
 from resource import settlement
 from resource import transition
