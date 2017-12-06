@@ -10,9 +10,9 @@ db = Database()
 class GiftCode(db.Entity):
     _table_ = 'gift_code'
     id = PrimaryKey(int, auto=True)
-    code = Optional(int)
+    code = Optional(str, 16, unique=True)
     balance = Optional(int)
-    expiration_date = Optional(datetime, default=lambda: datetime.now())
+    expiration_date = Optional(datetime)
     updated_date = Optional(datetime, default=lambda: datetime.now(), volatile=True)
     settlement = Optional('Settlement')
 
