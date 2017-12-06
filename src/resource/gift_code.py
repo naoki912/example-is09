@@ -21,14 +21,15 @@ api = Api(app, prefix="/gift_code")
 
 class GiftCodeResource(Resource):
     @db_session
-    def get(self, id: int=None):
-        if id is None:
+    def get(self, code: str=None):
+        if code is None:
+            # ToDo: ページング
             return api.make_response(
                 to_dict(select(i for i in GiftCode).order_by(GiftCode.id)),
                 200
             )
         else:
-            gift_code = GiftCode[id]
+            gift_code = select(i for i in GiftCode if i.code == code)
             return api.make_response(
                 to_dict(gift_code),
                 200
@@ -66,5 +67,5 @@ class GiftCodeResource(Resource):
 api.add_resource(
     GiftCodeResource,
     "/",
-    "/<int:id>"
+    "/<string:code>"
 )
