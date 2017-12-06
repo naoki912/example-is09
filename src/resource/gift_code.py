@@ -7,8 +7,9 @@ from flask_restful import Resource
 from flask_restful import reqparse
 from pony.orm import db_session
 from pony.orm import select
-from pony.orm.serialization import to_dict
+from pony.orm import delete
 from pony.orm import commit
+from pony.orm.serialization import to_dict
 
 from common.api import Api
 from common.util.code import generate_code
@@ -62,6 +63,11 @@ class GiftCodeResource(Resource):
         return api.make_response(
             to_dict(gift_code), 201
         )
+
+    @db_session
+    def delete(self, code: str=None):
+        delete(i for i in GiftCode if i.code == code)
+        return api.make_response(None, 204)
 
 
 api.add_resource(
