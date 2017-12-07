@@ -14,7 +14,7 @@ class GiftCode(db.Entity):
     balance = Optional(int)
     expiration_date = Optional(datetime)
     updated_date = Optional(datetime, default=lambda: datetime.now(), volatile=True)
-    settlement = Optional('Settlement')
+    settlement = Set('Settlement')
 
 
 class Product(db.Entity):
@@ -27,6 +27,7 @@ class Product(db.Entity):
     updated_date = Optional(datetime, default=lambda: datetime.now(), volatile=True)
     transitions = Set('Transition')
     url = Optional(str)
+    image_url = Optional(str)
 
 
 class Settlement(db.Entity):
