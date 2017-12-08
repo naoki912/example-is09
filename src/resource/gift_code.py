@@ -5,15 +5,10 @@ from flask import Blueprint
 from flask import current_app
 from flask_restful import Resource
 from flask_restful import reqparse
-from pony.orm import db_session
-from pony.orm import select
-from pony.orm import delete
-from pony.orm import commit
-from pony.orm.serialization import to_dict
 
 from common.api import Api
 from common.util.code import generate_code
-from model import GiftCode
+from model.gift_code import GiftCode
 
 
 app = Blueprint("gift_code", __name__)
@@ -21,22 +16,21 @@ api = Api(app, prefix="/gift_code")
 
 
 class GiftCodeResource(Resource):
-    @db_session
     def get(self, code: str=None):
         if code is None:
             # ToDo: ページング
             return api.make_response(
-                to_dict(select(i for i in GiftCode).order_by(GiftCode.id)),
+                # [GiftCode.__dict__ for GiftCode in GiftCode.query.all()[0]],
+                None,
                 200
             )
         else:
-            gift_code = select(i for i in GiftCode if i.code == code)
             return api.make_response(
-                to_dict(gift_code),
+                # GiftCode.query.filter_by(code=code).first().__dict__,
+                None,
                 200
             )
 
-    @db_session
     def post(self):
 
         parser = reqparse.RequestParser()
@@ -51,22 +45,19 @@ class GiftCodeResource(Resource):
         # ToDo: 期限をConfigで設定できるようにする
         expiration_date = datetime.now() + timedelta(days=1)
 
+        code = generate_code()
+
         gift_code = GiftCode(
-            code=generate_code(),
+            code=code,
             balance=balance,
             expiration_date=expiration_date,
         )
 
-        # ここでcommitをしないとgift_code変数内がNoneのままになる
-        commit()
-
         return api.make_response(
-            to_dict(gift_code), 201
+            gift_code, 201
         )
 
-    @db_session
     def delete(self, code: str=None):
-        delete(i for i in GiftCode if i.code == code)
         return api.make_response(None, 204)
 
 
