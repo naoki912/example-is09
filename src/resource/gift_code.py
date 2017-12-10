@@ -7,7 +7,7 @@ from flask_restful import Resource
 from flask_restful import reqparse
 
 from common.api import Api
-from common.util.code import generate_code
+from common.util.gift_code import generate_code
 from model.gift_code import GiftCode
 
 
