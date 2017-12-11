@@ -13,7 +13,7 @@ class AuthenticationError(Exception):
 def auth(f):
     @wraps(f)
     def wrapper(*args, **kwargs):
-        token = request.form.get('token', None)
+        token = request.headers.get('Token', None)
         if token is None:
             raise AuthenticationError('Token not found')
 
