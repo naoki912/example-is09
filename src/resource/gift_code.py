@@ -65,6 +65,15 @@ class GiftCodeResource(Resource):
         )
 
     def delete(self, code: str=None):
+
+        gift_code = GiftCode.query.filter_by(code=code).first()
+
+        if gift_code is None:
+            return api.make_response(None, 404)
+
+        db.session.delete(gift_code)
+        db.session.commit()
+
         return api.make_response(None, 204)
 
 
