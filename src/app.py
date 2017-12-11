@@ -2,10 +2,10 @@ from flask import Flask
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-from resource import gift_code
-from resource import settlement
-from resource import transition
-from resource import product
+from resource.gift_code import gift_code_bp
+from resource.settlement import settlement_bp
+from resource.transition import transition_bp
+from resource.product import product_bp
 from config import Config
 from model import db
 from model.gift_code import GiftCode
@@ -25,10 +25,10 @@ with app.app_context():
 
 ma.init_app(app)
 
-app.register_blueprint(gift_code.app, url_prefix='/api/v1')
-app.register_blueprint(settlement.app, url_prefix='/api/v1')
-app.register_blueprint(transition.app, url_prefix='/api/v1')
-app.register_blueprint(product.app, url_prefix='/api/v1')
+app.register_blueprint(gift_code_bp, url_prefix='/api/v1')
+app.register_blueprint(settlement_bp, url_prefix='/api/v1')
+app.register_blueprint(transition_bp, url_prefix='/api/v1')
+app.register_blueprint(product_bp, url_prefix='/api/v1')
 
 
 if __name__ == '__main__':

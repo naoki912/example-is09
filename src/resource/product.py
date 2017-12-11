@@ -6,8 +6,8 @@ from model.product import Product
 from model_schema.product import ProductSchema
 
 
-app = Blueprint("product", __name__)
-api = Api(app, prefix="/product")
+product_bp = Blueprint("product", __name__)
+api = Api(product_bp, prefix="/product")
 
 
 class ProductResource(Resource):

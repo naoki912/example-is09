@@ -6,8 +6,8 @@ from model.settlement import Settlement
 from model_schema.settlement import SettlementSchema
 
 
-app = Blueprint("settlement", __name__)
-api = Api(app, prefix="/settlement")
+settlement_bp = Blueprint("settlement", __name__)
+api = Api(settlement_bp, prefix="/settlement")
 
 
 class SettlementResource(Resource):

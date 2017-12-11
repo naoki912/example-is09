@@ -14,8 +14,8 @@ from model import db
 from common.util.auth import auth
 
 
-app = Blueprint("gift_code", __name__)
-api = Api(app, prefix="/gift_code")
+gift_code_bp = Blueprint("gift_code", __name__)
+api = Api(gift_code_bp, prefix="/gift_code")
 
 
 class GiftCodeResource(Resource):

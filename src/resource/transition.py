@@ -6,8 +6,8 @@ from model.transition import Transition
 from model_schema.transition import TransitionSchema
 
 
-app = Blueprint("transition", __name__)
-api = Api(app, prefix="/transition")
+transition_bp = Blueprint("transition", __name__)
+api = Api(transition_bp, prefix="/transition")
 
 
 class TransitionResource(Resource):
