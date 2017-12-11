@@ -5,8 +5,9 @@ from flask_restful import Api
 from model.settlement import Settlement
 from model_schema.settlement import SettlementSchema
 
-app = Blueprint("settlement", __name__, url_prefix="/settlement")
-api = Api(app)
+
+app = Blueprint("settlement", __name__)
+api = Api(app, prefix="/settlement")
 
 
 class SettlementResource(Resource):
