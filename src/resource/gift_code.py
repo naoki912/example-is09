@@ -94,7 +94,9 @@ class GiftCodeResource(Resource):
         )
         parser.add_argument(
             'expiration_date',
-            type=datetime,
+            # よく分からんので後は任せた
+            # type=datetime,
+            type=str,
         )
         args = parser.parse_args()
 
