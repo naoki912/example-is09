@@ -11,6 +11,24 @@ class AuthenticationError(Exception):
 
 
 def auth(f):
+    """
+    なんちゃってauth実装
+    これをResourceのget()とかput()とかの前に書けばおｋ
+
+    Example:
+        >> @auth
+        >> def get():
+        >>     ...
+        >>
+        >> @auth
+        >> def post():
+
+    もし認証方法を変えたかったらwrapper()の中身を変更してください
+
+    :param f:
+    :return:
+    """
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         token = request.headers.get('Token', None)
