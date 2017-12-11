@@ -9,6 +9,8 @@ from flask_restful import reqparse
 from common.api import Api
 from common.util.gift_code import generate_code
 from model.gift_code import GiftCode
+from model_schema.gift_code import GiftCodeSchema
+from model import db
 
 
 app = Blueprint("gift_code", __name__)
@@ -16,20 +18,21 @@ api = Api(app, prefix="/gift_code")
 
 
 class GiftCodeResource(Resource):
+
     def get(self, code: str=None):
+
         if code is None:
             # ToDo: ページング
-            return api.make_response(
-                # [GiftCode.__dict__ for GiftCode in GiftCode.query.all()[0]],
-                None,
-                200
-            )
+            gift_code = GiftCode.query.all()
+            body = GiftCodeSchema(many=True).dump(gift_code).data
         else:
-            return api.make_response(
-                # GiftCode.query.filter_by(code=code).first().__dict__,
-                None,
-                200
-            )
+            gift_code = GiftCode.query.filter_by(code=code).first()
+            body = GiftCodeSchema().dump(gift_code).data
+
+        return api.make_response(
+            body,
+            200
+        )
 
     def post(self):
 
@@ -52,9 +55,13 @@ class GiftCodeResource(Resource):
             balance=balance,
             expiration_date=expiration_date,
         )
+        db.session.add(gift_code)
+        db.session.commit()
+        body = GiftCodeSchema().dump(gift_code).data
 
         return api.make_response(
-            gift_code, 201
+            body,
+            201
         )
 
     def delete(self, code: str=None):
