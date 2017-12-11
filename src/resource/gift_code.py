@@ -27,6 +27,10 @@ class GiftCodeResource(Resource):
             body = GiftCodeSchema(many=True).dump(gift_code).data
         else:
             gift_code = GiftCode.query.filter_by(code=code).first()
+
+            if gift_code is None:
+                return api.make_response(None, 404)
+
             body = GiftCodeSchema().dump(gift_code).data
 
         return api.make_response(
