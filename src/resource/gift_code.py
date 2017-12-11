@@ -11,6 +11,7 @@ from common.util.gift_code import generate_code
 from model.gift_code import GiftCode
 from model_schema.gift_code import GiftCodeSchema
 from model import db
+from common.util.auth import auth
 
 
 app = Blueprint("gift_code", __name__)
@@ -67,6 +68,47 @@ class GiftCodeResource(Resource):
             body,
             201
         )
+
+    @auth
+    def put(self, code: str=None):
+        """
+        PUTの参考実装
+        - authデコレータの使い方
+        - RequestParserの使い方
+
+        :param code:
+        :return:
+        """
+
+        gift_code = GiftCode.query.filter_by(code=code).first()
+
+        if gift_code is None:
+            return api.make_response(None, 404)
+
+        # RequestParserは削除予定
+        # http://flask-restful.readthedocs.io/en/0.3.5/reqparse.html#request-parsing
+        parser = reqparse.RequestParser()
+        parser.add_argument(
+            'balance',
+            type=int,
+        )
+        parser.add_argument(
+            'expiration_date',
+            type=datetime,
+        )
+        args = parser.parse_args()
+
+        if args['balance'] is not None:
+            gift_code.balance = args['balance']
+
+        if args['expiration_date'] is not None:
+            gift_code.expiration_date = args['expiration_date']
+
+        db.session.commit()
+
+        body = GiftCodeSchema().dump(gift_code).data
+
+        return api.make_response(body, 200)
 
     def delete(self, code: str=None):
 
